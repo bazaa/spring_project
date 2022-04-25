@@ -47,7 +47,7 @@ public class BootStrapData implements CommandLineRunner {
         authorRepository.save(zero);
         bookRepository.save(dogs);
 
-        // create a new publisher
+        //create a new publisher
         Publisher publisher1 = new Publisher("penguin","123 Nowhere Street","Morris", "AK", 30481);
         // save that publisher
         publisherRepository.save(publisher1);

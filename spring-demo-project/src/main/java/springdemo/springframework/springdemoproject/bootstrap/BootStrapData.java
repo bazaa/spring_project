@@ -56,6 +56,9 @@ public class BootStrapData implements CommandLineRunner {
         dogs.setPublisher(publisher1);
         publisher1.getBooks().add(dogs);
 
+        programming.setPublisher(publisher1);
+        publisher1.getBooks().add(programming);
+
 
         System.out.println("Bootstrap started this");
         System.out.println("Number of books " + bookRepository.count());

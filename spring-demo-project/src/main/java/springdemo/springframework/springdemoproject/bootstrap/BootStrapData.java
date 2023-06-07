@@ -8,7 +8,6 @@ import springdemo.springframework.springdemoproject.domain.Publisher;
 import springdemo.springframework.springdemoproject.repositories.AuthorRepository;
 import springdemo.springframework.springdemoproject.repositories.BookRepository;
 import springdemo.springframework.springdemoproject.repositories.PublisherRepository;
-
 @Component
 public class BootStrapData implements CommandLineRunner {
 
@@ -16,10 +15,7 @@ public class BootStrapData implements CommandLineRunner {
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
 
-    public BootStrapData(
-            AuthorRepository authorRepository,
-            BookRepository bookRepository,
-            PublisherRepository publisherRepository) {
+    public BootStrapData(AuthorRepository authorRepository, BookRepository bookRepository, PublisherRepository publisherRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;
@@ -28,43 +24,42 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        //create book and author 1
-        Author eric = new Author("alex", "baza");
-        Book programming = new Book("Level Programming", "12345");
+        System.out.println("Started in Bootstrap");
 
-        //add book and author to books and authors
-        eric.getBooks().add(programming);
-        programming.getAuthors().add(eric);
+        Publisher publisher = new Publisher();
+        publisher.setName("SFG Publishing");
+        publisher.setCity("St Petersburg");
+        publisher.setState("FL");
 
-        //save book and author to database
+        publisherRepository.save(publisher);
+
+        System.out.println("Publisher Count: " + publisherRepository.count());
+
+        Author eric = new Author("Eric", "Evans");
+        Book ddd = new Book("Domain Driven Design", "123123");
+        eric.getBooks().add(ddd);
+        ddd.getAuthors().add(eric);
+
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
+
         authorRepository.save(eric);
-        bookRepository.save(programming);
+        bookRepository.save(ddd);
+        publisherRepository.save(publisher);
 
-        Author zero = new Author("zero", "baza");
-        Book dogs = new Book("eating paper", "49574049");
-        zero.getBooks().add(dogs);
-        dogs.getAuthors().add(zero);
+        Author rod = new Author("Rod", "Johnson");
+        Book noEJB = new Book("J2EE Development without EJB", "3939459459");
+        rod.getBooks().add(noEJB);
+        noEJB.getAuthors().add(rod);
 
-        authorRepository.save(zero);
-        bookRepository.save(dogs);
+        noEJB.setPublisher(publisher);
+        publisher.getBooks().add(noEJB);
 
-        //create a new publisher
-        Publisher publisher1 = new Publisher("penguin","123 Nowhere Street","Morris", "AK", 30481);
-        // save that publisher
-        publisherRepository.save(publisher1);
+        authorRepository.save(rod);
+        bookRepository.save(noEJB);
+        publisherRepository.save(publisher);
 
-        //add publisher to book and save it
-        dogs.setPublisher(publisher1);
-        publisher1.getBooks().add(dogs);
-
-        programming.setPublisher(publisher1);
-        publisher1.getBooks().add(programming);
-
-
-        System.out.println("Bootstrap started this");
-        System.out.println("Number of books " + bookRepository.count());
-        System.out.println("publisher " + publisher1);
-        System.out.println("number of publishers " + publisherRepository.count());
-        System.out.println("number of books in publisher " + publisher1.getBooks().size());
+        System.out.println("Number of Books: " + bookRepository.count());
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
     }
 }
